@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" class="uk-height-1-1">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src="vue.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.27.1/css/uikit.css">
+    <style type="text/css">
+      #el {      
+        background: linear-gradient(45deg, #e0004d 0%,#ff8d6d 100%);
+      }
+
+      .center * {
+        color: #FFF;
+      }
+
+      h1 {
+        font-size: 200px;
+        line-height: 1;
+      }
+
+      h2 {
+        font-size: 50px;
+      }
+
+      h3 {
+        font-size: 30px;
+        opacity: 0.7;
+      }
+
+      .settings {
+        position: absolute;
+        right: 0;
+        top: 0;
+        padding: 10px;
+      }
+
+      .uk-form input[type=text] {
+        background-color: transparent;
+        border: 1px solid rgba(255,255,255,0.5);
+        color: #FFF;
+        font-size: 20px;
+      }
+
+      .uk-form label {
+        color: #FFF;
+        opacity: 0.5;
+      }
+    </style>
+  </head>
+  <body class="uk-height-1-1">
+    <div id="el" class="uk-height-1-1">
+      <div class="settings uk-form">
+          <fieldset data-uk-margin>
+              <label class="uk-form-label">Focused</label>
+              <input type="text" v-model="focusMinutes" />
+              <label class="uk-form-label uk-margin-left">Pause</label>
+              <input type="text" v-model="pauseMinutes" />
+          </fieldset>
+      </div>
+      <div class="uk-vertical-align uk-text-center uk-height-1-1">
+          <div class="uk-vertical-align-middle">
+
+              <div class="center">
+                <h2>I'm in the tunnel.</h2>
+                <h3>Please don't interrupt me so I can keep on working focused.</h3>
+                <h2>Available in</h2>
+                <h1>{{ seconds | time }}</h1>
+                <h3>Slots when I'm open to questions:</h3>
+                <h2>{{ availableDate }} - {{ availableDate | addMinutes(10) }}</h2>
+                <h3>{{ availableDate | addMinutes(60) }} - {{ availableDate | addMinutes(70) }}</h3>
+                <h3>{{ availableDate | addMinutes(120) }} - {{ availableDate | addMinutes(130) }}</h3>
+                <h3>every {{ focusMinutes }} m for {{ pauseMinutes }} m</h3>
+              </div>
+
+          </div>
+      </div>
+    </div>
+
+    <script>
+    var vm = new Vue({
+
+      el: '#el',
+
+      data: {
+        focusMinutes: 50,
+        pauseMinutes: 10,
+        seconds: 3600
+      },
+
+      computed: {
+        availableDate: function() {
+          return moment().add(this.seconds, 'seconds').format('HH:mm:ss')
+        }
+      },
+
+      filters: {
+        time: function(seconds) {
+          var dur = moment.duration(seconds, 'seconds')
+          return Math.floor(dur.asMinutes()) + 'm ' + dur.seconds() + 's';
+        },
+        addMinutes: function(date, minutes) {
+          return moment(date, 'HH:mm:ss').add(minutes, 'minutes').format('HH:mm:ss')
+        }
+      },
+
+      created: function() {
+        this.seconds = this.focusMinutes * 60
+      },
+
+      watch: {
+        'focusMinutes': function(val) {
+          this.seconds = val * 60
+        }
+      },
+
+      methods: {
+        removeSecond: function() {
+          this.seconds -= 1
+        }
+      }
+    })
+
+    setInterval(function () {
+      vm.removeSecond()
+    }, 1000)
+    </script>
+  </body>
+</html>
