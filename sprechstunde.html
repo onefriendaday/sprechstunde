@@ -11,6 +11,10 @@
         background: linear-gradient(45deg, #e0004d 0%,#ff8d6d 100%);
       }
 
+      .green {
+        background: green;
+      }
+
       .center * {
         color: #FFF;
       }
@@ -51,6 +55,7 @@
   </head>
   <body class="uk-height-1-1">
     <div id="el" class="uk-height-1-1">
+      <div class="uk-height-1-1" :class="{'green': seconds == 0}">
       <div class="settings uk-form">
           <fieldset data-uk-margin>
               <label class="uk-form-label">Focused</label>
@@ -62,7 +67,10 @@
       <div class="uk-vertical-align uk-text-center uk-height-1-1">
           <div class="uk-vertical-align-middle">
 
-              <div class="center">
+              <div class="center" v-if="seconds == 0">
+                <h1>Available</h1>
+              </div>
+              <div class="center" v-else>
                 <h2>I'm in the tunnel.</h2>
                 <h3>Please don't interrupt me so I can keep on working focused.</h3>
                 <h2>Available in</h2>
@@ -75,6 +83,7 @@
               </div>
 
           </div>
+      </div>
       </div>
     </div>
 
@@ -117,7 +126,9 @@
 
       methods: {
         removeSecond: function() {
-          this.seconds -= 1
+          if (this.seconds > 0) {
+            this.seconds -= 1
+          }
         }
       }
     })
