@@ -76,9 +76,11 @@
                 <h2>Available in</h2>
                 <h1>{{ seconds | time }}</h1>
                 <h3>Slots when I'm open to questions:</h3>
-                <h2>{{ availableDate }} - {{ availableDate | addMinutes(10) }}</h2>
-                <h3>{{ availableDate | addMinutes(60) }} - {{ availableDate | addMinutes(70) }}</h3>
-                <h3>{{ availableDate | addMinutes(120) }} - {{ availableDate | addMinutes(130) }}</h3>
+                <h2>{{ availableDate }} - {{ availableDate | addMinutes( pauseMinutes ) }}</h2>
+                <h3>next: {{ availableDate | addMinutes(focusMinutes) | addMinutes(pauseMinutes) }}
+                  - {{ availableDate | addMinutes(focusMinutes) | addMinutes(2*pauseMinutes) }}</h3>
+                <h3>{{ availableDate | addMinutes(2* focusMinutes) | addMinutes(2*pauseMinutes) }} 
+                  - {{ availableDate | addMinutes(2* focusMinutes) | addMinutes(3* pauseMinutes) }}</h3>
                 <h3>every {{ focusMinutes }} m for {{ pauseMinutes }} m</h3>
               </div>
 
